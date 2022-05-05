@@ -1,0 +1,40 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly>
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-ProcessModel-Cpt"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <migration
+    replacementSettingsVersionRange="0"
+    settingsVersion="1"
+    alwaysProcess="yes"
+    >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\APPHOSTSVC [Start]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\APPHOSTSVC [DelayedAutostart]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\APPHOSTSVC [FailureActions]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\WAS [Start]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\WAS [DelayedAutostart]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\WAS [FailureActions]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\WAS\Parameters [*]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\INETINFO\Parameters [*]</pattern>
+            </objectSet>
+          </include>
+          <exclude>
+            <objectSet>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\WAS\Parameters [ServiceDll]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\INETINFO\Parameters [ServiceDll]</pattern>
+            </objectSet>
+          </exclude>
+        </rules>
+      </migXml>
+    </machineSpecific>
+  </migration>
+</assembly>

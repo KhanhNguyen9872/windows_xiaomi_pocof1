@@ -1,0 +1,239 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      buildType="$(build.buildType)"
+      language="neutral"
+      name="Microsoft-Windows-Container-Manager"
+      processorArchitecture="$(build.processorArchitecture)"
+      publicKeyToken="$(Build.WindowsPublicKeyToken)"
+      version="$(build.version)"
+      versionScope="nonSxS"
+      />
+  <dependency
+      discoverable="false"
+      optional="false"
+      resourceType="Resources"
+      >
+    <dependentAssembly dependencyType="prerequisite">
+      <assemblyIdentity
+          buildType="$(build.buildType)"
+          language="*"
+          name="Microsoft-Windows-Container-Manager.resources"
+          processorArchitecture="$(build.processorArchitecture)"
+          publicKeyToken="$(Build.WindowsPublicKeyToken)"
+          version="$(build.version)"
+          versionScope="nonSxS"
+          />
+    </dependentAssembly>
+  </dependency>
+  <file
+      buildFilter="build.arch=amd64 or build.arch=arm64"
+      destinationPath="$(runtime.System32)"
+      importPath="$(build.nttree)\silos\"
+      name="CmService.dll"
+      sourceName="CmService.dll"
+      sourcePath=".\"
+      >
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL"/>
+  </file>
+  <file
+      buildFilter="build.arch=amd64 or build.arch=arm64"
+      destinationPath="$(runtime.System32)"
+      importPath="$(build.nttree)\silos\"
+      name="cmclient.dll"
+      sourceName="cmclient.dll"
+      sourcePath=".\"
+      >
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL"/>
+  </file>
+  <file
+      buildFilter="build.arch=amd64 or build.arch=arm64"
+      destinationPath="$(runtime.System32)"
+      importPath="$(build.nttree)\silos\"
+      name="cmimageworker.exe"
+      sourceName="cmimageworker.exe"
+      sourcePath=".\"
+      >
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL"/>
+  </file>
+  <file
+      buildFilter="build.arch=amd64 or build.arch=arm64"
+      destinationPath="$(runtime.System32)"
+      importPath="$(build.nttree)\silos\"
+      name="cmdiag.exe"
+      sourceName="cmdiag.exe"
+      sourcePath=".\"
+      >
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL"/>
+  </file>
+  <file
+      buildFilter="build.arch=amd64 or build.arch=arm64"
+      destinationPath="$(runtime.System32)"
+      importPath="$(build.nttree)\silos\"
+      name="cmproxyd.exe"
+      sourceName="cmproxyd.exe"
+      sourcePath=".\"
+      >
+    <securityDescriptor name="WRP_FILE_DEFAULT_SDDL"/>
+  </file>
+  <localization>
+    <resources culture="en-US">
+      <stringTable>
+        <string
+            id="displayName0"
+            value="Windows Container Manager"
+            />
+        <string
+            id="displayName1"
+            value="Windows Container Manager"
+            />
+        <string
+            id="description2"
+            value="Manages images, state, and lifetime for client-facing container scenarios."
+            />
+        <string
+            id="displayName3"
+            value="WRP_FILE_DEFAULT_SDDL"
+            />
+        <string
+            id="description4"
+            value="Default SDDL for Windows Resource Protected file"
+            />
+      </stringTable>
+    </resources>
+  </localization>
+  <memberships>
+    <categoryMembership>
+      <id
+          name="Microsoft.Windows.Categories.Services"
+          publicKeyToken="$(build.WindowsPublicKeyToken)"
+          typeName="Service"
+          version="$(build.version)"
+          />
+      <categoryInstance>
+        <serviceData
+            dependOnService="rpcss,vmcompute,hns,hvhost"
+            description="@%systemroot%\system32\CmService.dll,-101"
+            displayName="@%systemroot%\system32\CmService.dll,-100"
+            errorControl="normal"
+            imagePath="%systemroot%\system32\svchost.exe -k LocalSystemNetworkRestricted"
+            name="CmService"
+            objectName="LocalSystem"
+            requiredPrivileges="SeTcbPrivilege,SeSecurityPrivilege,SeTakeOwnershipPrivilege,SeBackupPrivilege,SeRestorePrivilege,SeManageVolumePrivilege,SeIncreaseQuotaPrivilege,SeAssignPrimaryTokenPrivilege,SeProfileSingleProcessPrivilege,SeLockMemoryPrivilege"
+            sidType="unrestricted"
+            start="auto"
+            startAfterInstall="asynchronous"
+            type="win32ShareProcess"
+            >
+          <serviceTrigger
+              action="start"
+              subtype="RPC_INTERFACE_EVENT"
+              type="NetworkEndpointEvent"
+              >
+            <triggerData
+                type="string"
+                value="f1c37891-201f-4aa3-94b1-a5d131b04920"
+                />
+          </serviceTrigger>
+        </serviceData>
+      </categoryInstance>
+    </categoryMembership>
+    <categoryMembership>
+      <id
+          name="Microsoft.Windows.Categories"
+          publicKeyToken="365143bb27e7ac8b"
+          typeName="SvcHost"
+          version="1.0.0.0"
+          />
+      <categoryInstance subcategory="LocalSystemNetworkRestricted">
+        <serviceGroup
+            position="last"
+            serviceName="CmService"
+            />
+      </categoryInstance>
+    </categoryMembership>
+  </memberships>
+  <trustInfo>
+    <security>
+      <accessControl>
+        <securityDescriptorDefinitions>
+          <securityDescriptorDefinition
+              name="WRP_FILE_DEFAULT_SDDL"
+              sddl="$(build.wrpFileSddl)"
+              />
+          <securityDescriptorDefinition
+              name="WRP_REGKEY_DEFAULT_SDDL"
+              sddl="$(build.wrpRegKeySddl)"
+              />
+        </securityDescriptorDefinitions>
+      </accessControl>
+    </security>
+  </trustInfo>
+  <registryKeys>
+    <!-- Registry entries for the Container Manager Service -->
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\CmService\Parameters">
+      <registryValue
+          name="ServiceDll"
+          value="%SystemRoot%\System32\CmService.dll"
+          valueType="REG_EXPAND_SZ"
+          />
+      <registryValue
+          name="ServiceDllUnloadOnStop"
+          value="1"
+          valueType="REG_DWORD"
+          />
+    </registryKey>
+    <!-- Firewall entries to restrict network access for container manager -->
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\RestrictedServices\Static\System">
+      <registryValue
+          name="CmService-1"
+          value="V2.0|Action=Block|Dir=In|App=%SystemRoot%\system32\svchost.exe|Svc=CmService|Name=Block any traffic to CmService|"
+          valueType="REG_SZ"
+          />
+      <registryValue
+          name="CmService-2"
+          value="V2.0|Action=Block|Dir=Out|App=%SystemRoot%\system32\svchost.exe|Svc=CmService|Name=Block any traffic from CmService|"
+          valueType="REG_SZ"
+          />
+    </registryKey>
+    <registryKey keyName="HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management">
+      <registryValue
+          name="VmPauseOutSwapSizeCapMB"
+          value="2048"
+          valueType="REG_DWORD"
+          />
+    </registryKey>
+  </registryKeys>
+  <migration
+      scope="Upgrade"
+      settingsVersion="1"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="File">%CSIDL_COMMON_APPDATA%\Microsoft\Windows\Containers\* [*]</pattern>
+              <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Containers\* [*]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+      </migXml>
+    </machineSpecific>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="neutral"
+            name="Microsoft-Windows-Container-Manager"
+            processorArchitecture="*"
+            settingsVersionRange="1"
+            />
+      </supportedComponent>
+    </supportedComponents>
+  </migration>
+</assembly>

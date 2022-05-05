@@ -1,0 +1,56 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-Holographic-DisplayThrottling"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      alwaysProcess="Yes"
+      replacementSettingsVersionRange="0-1"
+      settingsVersion="2"
+      >
+    <migXml xmlns="">
+      <!-- In order to support migrating a single value to two separate locations, we define two migration rulesets as they're
+           run at separate stages during the migration step. For single 1-1 migrations, place the rule in the machineSpecific
+           section below. -->
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic\DisplayThrottling [Enabled]</pattern>
+          </objectSet>
+        </include>
+        <locationModify script="MigXmlHelper.RelativeMove(&apos;HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic\DisplayThrottling [Enabled]&apos;,
+            &apos;HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic\DisplayThrottling [ThrottleFramerate]&apos;)">
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic\DisplayThrottling [Enabled]</pattern>
+          </objectSet>
+        </locationModify>
+      </rules>
+    </migXml>
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <!-- Enable migration of user override settings for display throttling -->
+              <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic\DisplayThrottling [*]</pattern>
+            </objectSet>
+          </include>
+          <locationModify script="MigXmlHelper.RelativeMove(&apos;HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic\DisplayThrottling [Enabled]&apos;,
+            &apos;HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic\DisplayThrottling [ThrottleExperience]&apos;)">
+            <objectSet>
+              <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Holographic\DisplayThrottling [Enabled]</pattern>
+            </objectSet>
+          </locationModify>
+        </rules>
+      </migXml>
+    </machineSpecific>
+  </migration>
+</assembly>

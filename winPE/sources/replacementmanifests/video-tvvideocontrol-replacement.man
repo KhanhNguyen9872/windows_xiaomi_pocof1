@@ -1,0 +1,29 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-Video-TVVideoControl"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+    scope="Upgrade"
+    replacementSettingsVersionRange="0"
+    settingsVersion="1">
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\Microsoft\Multimedia\TV\Tuning Spaces\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <migrationDisplayID>Programs\Media_Center_Settings</migrationDisplayID>
+  </migration>
+</assembly>

@@ -1,0 +1,93 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-DNS-Client-MinWin"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      replacementSettingsVersionRange="0"
+      settingsVersion="1"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <!-- Collect settings for vista state -->
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [Domain]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [SearchList]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [UseDomainNameDevolution]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [DnsQueryTimeouts]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [DnsQuickQueryTimeouts]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [Hostname]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [Domain]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [NameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [RegisterAdapterName]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [RegistrationEnabled]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [EnableMulticast]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\Interfaces\$ [NameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [DhcpNameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [SearchList]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\Interfaces\$ [DhcpNameServer]</pattern>
+              <pattern type="Registry">HKLM\Software\Policies\Microsoft\Windows NT\DNSClient\* [*]</pattern>
+            </objectSet>
+          </include>
+          <exclude>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters</pattern>
+            </objectSet>
+          </exclude>
+          <trackChanges>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [Domain]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [SearchList]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [UseDomainNameDevolution]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [DnsQueryTimeouts]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [DnsQuickQueryTimeouts]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [Hostname]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [Domain]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [NameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [RegisterAdapterName]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [RegistrationEnabled]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [EnableMulticast]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\Interfaces\$ [NameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [DhcpNameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [SearchList]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\Interfaces\$ [DhcpNameServer]</pattern>
+              <pattern type="Registry">HKLM\Software\Policies\Microsoft\Windows NT\DNSClient\* [*]</pattern>
+              <pattern mode="subtractive" type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters</pattern>
+            </objectSet>
+          </trackChanges>
+          <!-- Merge rules for vista state -->
+          <merge script="MigXmlHelper.SourcePriority()">
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [Domain]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [SearchList]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [UseDomainNameDevolution]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [DnsQueryTimeouts]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [DnsQuickQueryTimeouts]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters [Hostname]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [Domain]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [NameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [RegisterAdapterName]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [RegistrationEnabled]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [EnableMulticast]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\Interfaces\$ [NameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [DhcpNameServer]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$ [SearchList]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\Interfaces\$ [DhcpNameServer]</pattern>
+              <pattern type="Registry">HKLM\Software\Policies\Microsoft\Windows NT\DNSClient\* [*]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+      </migXml>
+    </machineSpecific>
+  </migration>
+</assembly>

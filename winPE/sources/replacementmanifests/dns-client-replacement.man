@@ -1,0 +1,51 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-DNS-Client-Core"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      replacementSettingsVersionRange="0"
+      settingsVersion="1"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <!-- Collect settings for vista state -->
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache [Start]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\* [*]</pattern>
+            </objectSet>
+          </include>
+          <exclude>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters</pattern>
+            </objectSet>
+          </exclude>
+          <trackChanges>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache [Start]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\* [*]</pattern>
+              <pattern mode="subtractive" type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters</pattern>
+            </objectSet>
+          </trackChanges>
+          <!-- Merge rules for vista state -->
+          <merge script="MigXmlHelper.SourcePriority()">
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache [Start]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\* [*]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+      </migXml>
+    </machineSpecific>
+  </migration>
+</assembly>
