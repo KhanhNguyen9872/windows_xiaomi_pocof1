@@ -1,0 +1,214 @@
+Boot the twrp tecovery
+
+push parted script to sdcard
+adb push E:\arm64\parted /sdcard/
+
+#start adb shell
+adb shell
+#move parted to sbin directory
+cp /sdcard/parted /sbin/ && chmod 755 /sbin/parted
+#umount data and sdcard
+umount /data && umount /sdcard
+#start parted
+parted /dev/block/sda
+
+#Remove all partions Note: Android will be removed
+rm {partion number} #repeat until you remove all partitons
+
+
+
+
+
+### Poco f1 sda
+rm
+mkpart recovery 24.6KB 68MB
+mkpart esp fat32 68MB 400MB
+mkpart win ntfs 1400MB 59.1GB
+
+
+
+## sde
+rm 48
+mkpart pe fat32 400MB 1400MB
+
+## Format
+mkfs.fat -F32 -s1 /dev/block/platform/soc/1d84000.ufshc/by-name/pe
+mkfs.fat -F32 -s1 /dev/block/platform/soc/1d84000.ufshc/by-name/esp
+mkfs.ntfs -f /dev/block/platform/soc/1d84000.ufshc/by-name/win
+
+
+
+
+
+
+
+#make neccesary partitions (64GB model)
+mkpart recovery 4195KB 71MB
+mkpart logdump 268.1MB 268.11MB
+mkpart minidump 268.11MB 268.12MB
+mkpart esp fat32 71MB 271MB
+mkpart win ntfs 271MB 59.1GB
+mkpart data ntfs 470.1MB 1611MB
+mkpart pe fat32 58.1GB 59.1GB
+
+#mkpart cache ntfs 470.1MB 1610MB
+mkpart logfs 8389KB 16.8MB
+mkpart cust 1610MB 1611MB
+
+mkpart vendor ext4 268MB 1342MB
+
+mkpart pe fat32 1342MB 4832MB
+
+
+
+### /dev/block/sde
+mkpart data ntfs 470MB 4832MB
+
+
+
+#set esp on
+set 12 esp on
+#Quit
+quit
+
+#reboot to twrp
+
+#format the partions
+mkfs.fat -F32 -s1 /dev/block/platform/soc/1d84000.ufshc/by-name/pe
+mkfs.fat -F32 -s1 /dev/block/platform/soc/1d84000.ufshc/by-name/esp
+mkfs.ntfs -f /dev/block/platform/soc/1d84000.ufshc/by-name/system
+mke2fs -t ext4 /dev/block/by-name/persist
+
+#mount PE partion
+
+mkdir /mnt/win && mount /dev/block/platform/soc/1d84000.ufshc/by-name/pe /mnt/win
+
+mkdir /mnt/win && mount.ntfs /dev/block/platform/soc/1d84000.ufshc/by-name/win /mnt/win
+
+#Copy PE files 
+
+################ commands on the phone################
+diskpart
+
+select disk 0
+
+list part
+
+select part 2
+
+assign letter=Y
+
+exit
+
+bcdedit /store Y:\efi\microsoft\boot\bcd /set {Default} testsigning on
+
+bcdedit /store Y:\efi\microsoft\boot\bcd /set {Default} nointegritychecks on
+
+shutdown -s -t 0
+
+
+
+beryllium:/ # chmod 755 /sbin/parted && parted /dev/block/sda
+GNU Parted 3.2
+Using /dev/block/sda
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted) p
+Model: SKhynix H28U74301AMR (scsi)
+Disk /dev/block/sda: 59.1GB
+Sector size (logical/physical): 4096B/4096B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name        Flags
+ 1      24.6kB  41.0kB  16.4kB               switch
+ 2      41.0kB  73.7kB  32.8kB               ssd
+ 3      73.7kB  524kB   451kB                bk01
+ 4      524kB   786kB   262kB                bk02
+ 5      786kB   1049kB  262kB                bk03
+ 6      1049kB  1573kB  524kB                keystore
+ 7      1573kB  2097kB  524kB                frp
+ 8      2097kB  4194kB  2097kB               bk04
+ 9      4194kB  8389kB  4194kB               misc
+10      8389kB  16.8MB  8389kB               logfs
+11      16.8MB  33.6MB  16.8MB               oops
+12      33.6MB  50.3MB  16.8MB               devinfo
+13      50.3MB  67.1MB  16.8MB               bk05
+14      67.1MB  134MB   67.1MB  ext4         persist
+15      134MB   201MB   67.1MB  ext4         persistbak
+16      201MB   268MB   67.1MB               logdump
+17      268MB   403MB   134MB                minidump
+18      403MB   470MB   67.1MB               recovery
+19      470MB   1610MB  1140MB  ntfs         cache       msftdata
+20      1610MB  1611MB  1049kB               cust
+21      1611MB  2000MB  389MB   fat32        esp         boot, esp
+22      2000MB  58.1GB  56.1GB  ntfs         win         msftdata
+23      58.1GB  59.1GB  964MB   fat32        pe          msftdata
+
+
+
+
+
+
+
+
+
+beryllium:/ # chmod 755 /sbin/parted && parted /dev/block/sde
+GNU Parted 3.2
+Using /dev/block/sde
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted) p
+Model: SKhynix H28U74301AMR (scsi)
+Disk /dev/block/sde: 4832MB
+Sector size (logical/physical): 4096B/4096B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name         Flags
+ 1      24.6kB  57.3kB  32.8kB               sec
+ 2      57.3kB  90.1kB  32.8kB               limits
+ 3      90.1kB  262kB   172kB                bk41
+ 4      262kB   393kB   131kB                qupfw_a
+ 5      393kB   524kB   131kB                qupfw_b
+ 6      524kB   786kB   262kB                apdp
+ 7      786kB   1049kB  262kB                msadp
+ 8      1049kB  1180kB  131kB                vbmeta
+ 9      1180kB  1311kB  131kB                bk42
+10      1311kB  1442kB  131kB                storsec_a
+11      1442kB  1573kB  131kB                storsec_b
+12      1573kB  1835kB  262kB                devcfg_a
+13      1835kB  2097kB  262kB                devcfg_b
+14      2097kB  2621kB  524kB                aop_a
+15      2621kB  3146kB  524kB                aop_b
+16      3146kB  3670kB  524kB                bk43
+17      3670kB  4194kB  524kB                bk44
+18      4194kB  5243kB  1049kB               cmnlib_a
+19      5243kB  6291kB  1049kB               cmnlib_b
+20      6291kB  7340kB  1049kB               cmnlib64_a
+21      7340kB  8389kB  1049kB               cmnlib64_b
+22      8389kB  9437kB  1049kB               keymaster_a
+23      9437kB  10.5MB  1049kB               keymaster_b
+24      10.5MB  11.5MB  1049kB               bluetooth
+25      11.5MB  12.6MB  1049kB               bk45
+26      12.6MB  13.6MB  1049kB               hyp_a
+27      13.6MB  14.7MB  1049kB               hyp_b
+28      14.7MB  15.7MB  1049kB               dip
+29      15.7MB  16.8MB  1049kB               bk46
+30      16.8MB  18.9MB  2097kB               sti
+31      18.9MB  21.0MB  2097kB               toolsfv
+32      21.0MB  23.1MB  2097kB               abl_a
+33      23.1MB  25.2MB  2097kB               abl_b
+34      25.2MB  29.4MB  4194kB               tz_a
+35      29.4MB  33.6MB  4194kB               tz_b
+36      33.6MB  41.9MB  8389kB               fsg
+37      41.9MB  50.3MB  8389kB               dtbo
+38      50.3MB  58.7MB  8389kB               bk47
+39      58.7MB  67.1MB  8389kB               spunvm
+40      67.1MB  83.9MB  16.8MB               bk48
+41      83.9MB  101MB   16.8MB               bk49
+42      101MB   134MB   33.6MB               splash
+43      134MB   168MB   33.6MB               logo
+44      168MB   201MB   33.6MB  ext4         dsp
+45      201MB   268MB   67.1MB               boot
+46      268MB   470MB   201MB                modem        msftdata
+47      470MB   1544MB  1074MB  ext2         vendor
+48      1544MB  4832MB  3288MB  ext2         system       msftdata
