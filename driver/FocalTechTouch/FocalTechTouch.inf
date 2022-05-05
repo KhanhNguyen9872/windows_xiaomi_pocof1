@@ -1,0 +1,93 @@
+﻿;
+; FocalTechTouch.INF
+; Copyright (c) 2000,2015 Microsoft Corporation
+; Copyright (c) 2018,2019 Bingxing Wang
+; Copyright (c) 2018,2021 LumiaWoA authors
+;
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = HIDClass
+ClassGuid   = {745A17A0-74D3-11D0-B6FE-00A0C90F57DA}
+Provider    = %Provider_Name%
+DriverVer = 08/23/2021,15.38.7.352
+CatalogFile = FocalTechTouch.cat
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %Installation_Disk%,,,""
+
+[SourceDisksFiles]
+FocalTechTouch.sys  = 1,,
+
+[Manufacturer]
+%Manufacturer_Name% = Standard,NTARM64
+
+[Standard.NTARM64]
+%TchDriver_Device_Desc% = TchDriver_Device.NT, ACPI\FTTS8719
+
+[DefaultInstall.NTarm64]
+AddReg    = Resolutions.NT.HW.AddReg
+
+[Resolutions.NT.HW.AddReg]
+HKLM, %ScreenProps%, "TouchPhysicalWidth", 0x10001, 0x438
+HKLM, %ScreenProps%, "TouchPhysicalHeight", 0x10001, 0x8c6
+HKLM, %ScreenProps%, "DisplayPhysicalWidth", 0x10001, 0x438
+HKLM, %ScreenProps%, "DisplayPhysicalHeight", 0x10001, 0x8c6
+HKLM, %ScreenProps%, "DisplayViewableWidth", 0x10001, 0x438
+HKLM, %ScreenProps%, "DisplayViewableHeight", 0x10001, 0x8c6
+
+;*****************************************
+; TchDriver client driver Install Section
+;*****************************************
+
+[TchDriver_Device.NT]
+CopyFiles = TchDriver_Device.NT.CopyFiles
+
+[TchDriver_Device.NT.CopyFiles]
+FocalTechTouch.sys
+
+[TchDriver_Device.NT.HW]
+AddReg = FilterInst.NT.HW.AddReg
+
+[FilterInst.NT.HW.AddReg]
+HKR,,"UpperFilters",    %REG_MULTI_SZ%, mshidkmdf
+HKR,,"MultiportDevice", %REG_DWORD%,    0
+
+;-------------- Service installation
+[TchDriver_Device.NT.Services]
+AddService = FocalTechTouch, %SPSVCINST_ASSOCSERVICE%, TchDriver_Service_Inst
+
+; ------------- TchDriver driver install section
+[TchDriver_Service_Inst]
+DisplayName    = %TchDriver_Service_Desc%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_DEMAND_START%
+ErrorControl   = %SERVICE_ERROR_NORMAL%
+ServiceBinary  = %13%\FocalTechTouch.sys
+LoadOrderGroup = Base
+
+; ------------- Strings section
+[Strings]
+Provider_Name           = "LumiaWoA authors"
+Manufacturer_Name       = "FocalTech"
+Installation_Disk       = "FocalTech 5x Digitizer (FT8607) Installation Disk"
+TchDriver_Device_Desc   = "FocalTech 5x Digitizer (FT8607)"
+TchDriver_Service_Desc  = "FocalTech 5x Digitizer (FT8607) Driver"
+
+; ------------- non-localizable strings
+ScreenProps            = "System\Touch\SCREENPROPERTIES"
+SPSVCINST_ASSOCSERVICE  = 0x00000002
+SERVICE_KERNEL_DRIVER   = 1
+SERVICE_BOOT_START      = 0
+SERVICE_SYSTEM_START    = 1
+SERVICE_DEMAND_START    = 3
+SERVICE_ERROR_NORMAL    = 1
+SERVICE_ERROR_IGNORE    = 0
+SERVICE_ERROR_CRITICAL  = 3
+REG_EXPAND_SZ           = 0x00020000
+REG_MULTI_SZ            = 0x00010000
+REG_DWORD               = 0x00010001
+REG_SZ                  = 0x00000000
