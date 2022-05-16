@@ -15,7 +15,7 @@ rm {partion number} #remove userdata partition
 #create partition windows
 mkpart recovery 24.6KB 68MB
 mkpart esp fat32 68MB 400MB
-mkpart pe fat32 68MB 400MB
+mkpart pe fat32 400MB 1400MB
 mkpart win ntfs 1400MB 59.1GB
 
 
@@ -27,15 +27,15 @@ quit
 # Reboot to recovery again
 
 ## Format on adb shell
-mkfs.fat -F32 -s1 /dev/block/platform/soc/1d84000.ufshc/by-name/pe
-mkfs.fat -F32 -s1 /dev/block/platform/soc/1d84000.ufshc/by-name/esp
-mkfs.ntfs -f /dev/block/platform/soc/1d84000.ufshc/by-name/win
-mkfs.ntfs -f /dev/block/platform/soc/1d84000.ufshc/by-name/cache
+mkfs.fat -F32 -s1 /dev/block/by-name/pe
+mkfs.fat -F32 -s1 /dev/block/by-name/esp
+mkfs.ntfs -f /dev/block/by-name/win
+mkfs.ntfs -f /dev/block/by-name/cache
 
 
 #mount PE partion
 adb shell
-mkdir /mnt/pe && mount /dev/block/platform/soc/1d84000.ufshc/by-name/pe /mnt/pe
+mkdir /mnt/pe && mount /dev/block/by-name/pe /mnt/pe
 exit
 adb push ./../../winPE/boot /mnt/pe
 adb push ./../../winPE/efi /mnt/pe
@@ -45,9 +45,9 @@ adb push ./../../DISM /mnt/pe
 adb push ./../../file_fix /mnt/pe
 adb push ./../../commands.txt /mnt/pe
 adb shell
-unmount /mnt/pe
+umount /mnt/pe
 
-mkdir /mnt/win && mount.ntfs /dev/block/platform/soc/1d84000.ufshc/by-name/win /mnt/win
+mkdir /mnt/win && mount.ntfs /dev/block/by-name/win /mnt/win
 exit
 adb push ./../../driver /mnt/win
 adb push [your-iso-file] /mnt/win
@@ -141,9 +141,15 @@ bcdedit /store Y:\efi\microsoft\boot\bcd /set {Default} nointegritychecks on
 
 shutdown -r -t 0
 
+## Fix boot parition
 
+bootrec /fixmbr
 
+bootrec /fixboot
 
+bcdboot C:\Windows
+
+y
 
 
 
@@ -154,6 +160,35 @@ mke2fs -t ext4 /dev/block/by-name/persist
 
 # Create recovery partitions if your device don't have
 mkpart recovery 4195KB 71MB
+
+
+
+
+# Restore original /dev/block/sda
+mkpart switch 24.6KB 39.0KB
+mkpart ssd 41.1KB 71.0KB
+mkpart bk01 76.7KB 524KB
+mkpart bk02 526KB 786KB
+mkpart bk03 788KB 1047KB
+mkpart keystore 1051KB 1571KB
+mkpart frp 1575KB 2095KB
+mkpart bk04 2099KB 4192KB
+mkpart misc 4196KB 8387KB
+mkpart logfs 8391KB 16.8MB
+mkpart oops 16.8MB 33.6MB
+mkpart devinfo 33.6MB 50.3MB
+mkpart bk05 50.3MB 67.1MB
+mkpart persist 67.1MB 134MB
+mkpart persistbak 134MB 201MB
+mkpart logdump 201MB 268MB
+mkpart minidump 268MB 403MB
+mkpart recovery 403MB 470MB
+mkpart cache 470MB 1610MB
+mkpart cust 1610MB 2150MB
+mkpart userdata 2150MB 59.1GB
+
+
+
 
 
 ######### EXAMPLE PARTED ###########
