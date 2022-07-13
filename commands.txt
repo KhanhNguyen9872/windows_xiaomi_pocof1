@@ -163,7 +163,7 @@ mkpart recovery 4195KB 71MB
 
 
 
-
+##############################################
 # Restore original /dev/block/sda
 mkpart switch 24.6KB 39.0KB
 mkpart ssd 41.1KB 71.0KB
@@ -187,6 +187,13 @@ mkpart cache 470MB 1610MB
 mkpart cust 1610MB 2150MB
 mkpart userdata 2150MB 59.1GB
 
+#reboot to recovery and run this command on adb shell
+mke2fs -t ext4 /dev/block/by-name/persist
+mke2fs -t ext4 /dev/block/by-name/persistbak
+mke2fs -t ext4 /dev/block/by-name/cache
+mke2fs -t ext4 /dev/block/by-name/cust
+mke2fs -t ext4 /dev/block/by-name/userdata
+#############################################
 
 
 
