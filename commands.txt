@@ -185,7 +185,7 @@ mkpart minidump 268MB 403MB
 mkpart recovery 403MB 470MB
 mkpart cache 470MB 1610MB
 mkpart cust 1610MB 2150MB
-mkpart userdata 2150MB 59.1GB
+mkpart userdata 2350MB 59.1GB
 
 #reboot to recovery and run this command on adb shell
 mke2fs -t ext4 /dev/block/by-name/persist
