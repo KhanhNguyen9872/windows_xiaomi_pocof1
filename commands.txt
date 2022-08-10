@@ -35,7 +35,7 @@ mkfs.ntfs -f /dev/block/by-name/cache
 
 #mount PE partion
 adb shell
-mkdir /mnt/pe && mount /dev/block/by-name/pe /mnt/pe
+mkdir /mnt/pe; mount /dev/block/by-name/pe /mnt/pe
 exit
 adb push ./../../winPE/boot /mnt/pe
 adb push ./../../winPE/efi /mnt/pe
@@ -44,14 +44,15 @@ adb push ./../../winPE/bootmgr.efi /mnt/pe
 adb push ./../../DISM /mnt/pe
 adb push ./../../file_fix /mnt/pe
 adb push ./../../commands.txt /mnt/pe
+adb push ./../../driver /mnt/pe
 adb shell
 umount /mnt/pe
 
-mkdir /mnt/win && mount.ntfs /dev/block/by-name/win /mnt/win
+mkdir /mnt/win; mount.ntfs /dev/block/by-name/win /mnt/win
 exit
-adb push ./../../driver /mnt/win
 adb push [your-iso-file] /mnt/win
-unmount /mnt/win
+adb shell
+umount /mnt/win
 exit
 adb reboot
 
