@@ -1,4 +1,6 @@
-Boot the twrp tecovery
+- Download boot_wim using script
+
+Boot the twrp recovery
 
 #start adb shell
 adb shell
